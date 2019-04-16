@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>msg</class>
+ <widget class="QWidget" name="msg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>101</width>
+    <height>234</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="pushButtonQuestion">
+     <property name="text">
+      <string>询问消息框</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonInfo">
+     <property name="text">
+      <string>信息消息框</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonWarning">
+     <property name="text">
+      <string>警告消息框</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonCritical">
+     <property name="text">
+      <string>致命消息框</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonAbout">
+     <property name="text">
+      <string>关于消息框</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonQuit">
+     <property name="text">
+      <string>返回</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../Desktop/return.png</normaloff>../Desktop/return.png</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
