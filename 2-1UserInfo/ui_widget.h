@@ -46,8 +46,15 @@ public:
     QWidget *page2;
     QLabel *label_2;
     QWidget *page3;
+    QGridLayout *gridLayout_2;
     QLabel *label_3;
     QComboBox *comboBox;
+    QSpacerItem *horizontalSpacer_3;
+    QLabel *label_6;
+    QComboBox *comboBox_2;
+    QSpacerItem *horizontalSpacer_4;
+    QSpacerItem *verticalSpacer_3;
+    QSpacerItem *verticalSpacer_4;
 
     void setupUi(QWidget *Widget)
     {
@@ -62,7 +69,7 @@ public:
         listWidget->setGeometry(QRect(20, 30, 121, 371));
         stackedWidget = new QStackedWidget(Widget);
         stackedWidget->setObjectName(QStringLiteral("stackedWidget"));
-        stackedWidget->setGeometry(QRect(150, 30, 561, 331));
+        stackedWidget->setGeometry(QRect(150, 30, 539, 328));
         stackedWidget->setFrameShape(QFrame::Panel);
         stackedWidget->setFrameShadow(QFrame::Raised);
         page1 = new QWidget();
@@ -128,17 +135,51 @@ public:
         stackedWidget->addWidget(page2);
         page3 = new QWidget();
         page3->setObjectName(QStringLiteral("page3"));
+        gridLayout_2 = new QGridLayout(page3);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         label_3 = new QLabel(page3);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(50, 30, 67, 17));
+
+        gridLayout_2->addWidget(label_3, 0, 0, 1, 1);
+
         comboBox = new QComboBox(page3);
         comboBox->setObjectName(QStringLiteral("comboBox"));
-        comboBox->setGeometry(QRect(130, 20, 86, 25));
+
+        gridLayout_2->addWidget(comboBox, 0, 1, 1, 1);
+
+        horizontalSpacer_3 = new QSpacerItem(388, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_3, 0, 2, 1, 1);
+
+        label_6 = new QLabel(page3);
+        label_6->setObjectName(QStringLiteral("label_6"));
+
+        gridLayout_2->addWidget(label_6, 1, 0, 1, 1);
+
+        comboBox_2 = new QComboBox(page3);
+        comboBox_2->setObjectName(QStringLiteral("comboBox_2"));
+
+        gridLayout_2->addWidget(comboBox_2, 1, 1, 1, 1);
+
+        horizontalSpacer_4 = new QSpacerItem(388, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_4, 1, 2, 1, 1);
+
+        verticalSpacer_3 = new QSpacerItem(20, 243, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_2->addItem(verticalSpacer_3, 2, 0, 1, 1);
+
+        verticalSpacer_4 = new QSpacerItem(20, 243, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_2->addItem(verticalSpacer_4, 2, 1, 1, 1);
+
         stackedWidget->addWidget(page3);
 
         retranslateUi(Widget);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(Widget);
@@ -169,6 +210,7 @@ public:
          << QApplication::translate("Widget", "\345\271\277\344\270\234", Q_NULLPTR)
          << QApplication::translate("Widget", "\345\271\277\350\245\277", Q_NULLPTR)
         );
+        label_6->setText(QApplication::translate("Widget", "\345\237\216\345\270\202", Q_NULLPTR));
     } // retranslateUi
 
 };

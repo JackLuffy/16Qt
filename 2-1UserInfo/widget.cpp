@@ -21,6 +21,20 @@ Widget::Widget(QWidget *parent) :
     provices.append("湖北");
     ui->comboBox->addItems(provices);
 
+    QStringList guangdong, guangxi, hunan, hubei;
+    guangdong.append("广州");
+    guangdong.append("佛山");
+    guangdong.append("潮汕");
+    guangxi.append("桂林");
+    hunan.append("长沙");
+    hunan.append("郴州");
+    hubei.append("武汉");
+
+    city << guangdong;
+    city << guangxi;
+    city << hunan;
+    city << hubei;
+
     connect(ui->listWidget, SIGNAL(currentRowChanged(int)),
             ui->stackedWidget, SLOT(setCurrentIndex(int)));
 }
@@ -38,4 +52,18 @@ void Widget::on_pushButton_clicked()
     ui->label->setPixmap(pix.scaled(s));
 
     qDebug() << "xx";
+}
+
+void Widget::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    ui->comboBox_2->clear();
+
+    if(arg1 == QString("广东"))
+        ui->comboBox_2->addItems(city.at(0));
+    if(arg1 == QString("广西"))
+        ui->comboBox_2->addItems(city.at(1));
+    if(arg1 == QString("湖南"))
+        ui->comboBox_2->addItems(city.at(2));
+    if(arg1 == QString("湖北"))
+        ui->comboBox_2->addItems(city.at(3));
 }
