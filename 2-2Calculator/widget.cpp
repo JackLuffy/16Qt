@@ -10,39 +10,15 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setBtnSize(30, 20);
+    // 设置按键最小尺寸
     setBtnMinimumSize(30, 20);
 
+    // 设置LCD数位、颜色和大小
     ui->lcdNumber->setDigitCount(10);
-    ui->lcdNumber->setPalette(QPalette(QColor(Qt::blue)));
+    ui->lcdNumber->setPalette(QPalette(QColor(Qt::black)));
     ui->lcdNumber->setMinimumSize(120, 30);
 
-    mainLayout = new QGridLayout(this);
-    mainLayout->addWidget(ui->lcdNumber,      0, 0, 1, 3);
-    mainLayout->addWidget(ui->pushButton_CE,  0, 3, 1, 1);
-
-    mainLayout->addWidget(ui->pushButton_1,   1, 0, 1, 1);
-    mainLayout->addWidget(ui->pushButton_2,   1, 1, 1, 1);
-    mainLayout->addWidget(ui->pushButton_3,   1, 2, 1, 1);
-    mainLayout->addWidget(ui->pushButton_Plus,1, 3, 1, 1);
-
-    mainLayout->addWidget(ui->pushButton_4,    2, 0, 1, 1);
-    mainLayout->addWidget(ui->pushButton_5,    2, 1, 1, 1);
-    mainLayout->addWidget(ui->pushButton_6,    2, 2, 1, 1);
-    mainLayout->addWidget(ui->pushButton_Minus,2, 3, 1, 1);
-
-    mainLayout->addWidget(ui->pushButton_7,    3, 0, 1, 1);
-    mainLayout->addWidget(ui->pushButton_8,    3, 1, 1, 1);
-    mainLayout->addWidget(ui->pushButton_9,    3, 2, 1, 1);
-    mainLayout->addWidget(ui->pushButton_Multi,3, 3, 1, 1);
-
-    mainLayout->addWidget(ui->pushButton_Dot,  4, 0, 1, 1);
-    mainLayout->addWidget(ui->pushButton_0,    4, 1, 1, 1);
-    mainLayout->addWidget(ui->pushButton_Eq,   4, 2, 1, 1);
-    mainLayout->addWidget(ui->pushButton_Devi, 4, 3, 1, 1);
-
-    this->resize(1,1);
-
+    // 设置按键组
     btnGroup = new QButtonGroup(this);
     btnGroup->addButton(ui->pushButton_0, 0);
     btnGroup->addButton(ui->pushButton_1, 1);
@@ -66,32 +42,13 @@ Widget::Widget(QWidget *parent) :
 
     connect(btnGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(cal(int)));
+
+    this->setGeometry(300, 300, 1, 1);
 }
 
 Widget::~Widget()
 {
     delete ui;
-}
-
-void Widget::setBtnSize(int w, int h)
-{
-    ui->pushButton_1->resize(w, h);
-    ui->pushButton_2->resize(w, h);
-    ui->pushButton_3->resize(w, h);
-    ui->pushButton_4->resize(w, h);
-    ui->pushButton_5->resize(w, h);
-    ui->pushButton_6->resize(w, h);
-    ui->pushButton_7->resize(w, h);
-    ui->pushButton_8->resize(w, h);
-    ui->pushButton_9->resize(w, h);
-    ui->pushButton_0->resize(w, h);
-    ui->pushButton_Plus->resize(w, h);
-    ui->pushButton_Minus->resize(w, h);
-    ui->pushButton_Multi->resize(w, h);
-    ui->pushButton_Devi->resize(w, h);
-    ui->pushButton_Dot->resize(w, h);
-    ui->pushButton_Eq->resize(w, h);
-    ui->pushButton_CE->resize(w, h);
 }
 
 void Widget::setBtnMinimumSize(int w, int h)
@@ -124,20 +81,19 @@ void Widget::cal(int btnId)
     static int  op;
 
     // 计算结果
-    if(btnId == 16)
+    if(btnId == Widget::EQ)
     {
-        qDebug() << "计算结果:" << firstVal << "," << op << "," << secondVal;
         switch (op) {
-        case 10:
+        case Widget::PLUS:
             ui->lcdNumber->display(firstVal + secondVal);
             break;
-        case 11:
+        case Widget::MINUS:
             ui->lcdNumber->display(firstVal - secondVal);
             break;
-        case 12:
+        case Widget::MULTI:
             ui->lcdNumber->display(firstVal * secondVal);
             break;
-        case 13:
+        case Widget::DIVI:
             ui->lcdNumber->display(firstVal / secondVal);
             break;
         }
@@ -167,7 +123,70 @@ void Widget::cal(int btnId)
     // 输入第二个操作数
     else
     {
-    ui->lcdNumber->display(secondVal*10+btnId);
-    secondVal = ui->lcdNumber->value();
+        ui->lcdNumber->display(secondVal*10+btnId);
+        secondVal = ui->lcdNumber->value();
+    }
+}
+
+
+void Widget::keyPressEvent(QKeyEvent *kpe)
+{
+    qDebug() << hex << "0x" << kpe->key();
+
+    if(kpe->modifiers() == Qt::ShiftModifier)
+    {
+        switch(kpe->key())
+        {
+        case Qt::Key_Plus:
+            btnGroup->buttonClicked(PLUS);
+            break;
+        case Qt::Key_Asterisk:
+            btnGroup->buttonClicked(MULTI);
+            break;
+        }
+        return;
+    }
+    switch(kpe->key())
+    {
+    case Qt::Key_0:
+        btnGroup->buttonClicked(0);
+        break;
+    case Qt::Key_1:
+        btnGroup->buttonClicked(1);
+        break;
+    case Qt::Key_2:
+        btnGroup->buttonClicked(2);
+        break;
+    case Qt::Key_3:
+        btnGroup->buttonClicked(3);
+        break;
+    case Qt::Key_4:
+        btnGroup->buttonClicked(4);
+        break;
+    case Qt::Key_5:
+        btnGroup->buttonClicked(5);
+        break;
+    case Qt::Key_6:
+        btnGroup->buttonClicked(6);
+        break;
+    case Qt::Key_7:
+        btnGroup->buttonClicked(7);
+        break;
+    case Qt::Key_8:
+        btnGroup->buttonClicked(8);
+        break;
+    case Qt::Key_9:
+        btnGroup->buttonClicked(9);
+        break;
+    case Qt::Key_Equal:
+    case Qt::Key_Return:
+        btnGroup->buttonClicked(EQ);
+        break;
+    case Qt::Key_Minus:
+        btnGroup->buttonClicked(MINUS);
+        break;
+    case Qt::Key_Slash:
+        btnGroup->buttonClicked(DIVI);
+        break;
     }
 }

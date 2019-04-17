@@ -2,8 +2,8 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <QGridLayout>
 #include <QButtonGroup>
+#include <QKeyEvent>
 
 namespace Ui {
 class Widget;
@@ -17,13 +17,13 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+    enum optr{PLUS=10, MINUS, MULTI, DIVI, CE, DOT, EQ};
+
+    void keyPressEvent(QKeyEvent *kpe);
+
 private:
     Ui::Widget *ui;
-    QGridLayout *mainLayout;
-
-    void setBtnSize(int w, int h);
     void setBtnMinimumSize(int w, int h);
-
     QButtonGroup *btnGroup;
 
 private slots:
