@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-04-19T08:49:01
+# Project created by QtCreator 2019-04-20T21:07:00
 #
 #-------------------------------------------------
 
@@ -26,8 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    drawwidget.cpp
+    drawarea.cpp
 
 HEADERS += \
         mainwindow.h \
-    drawwidget.h
+    drawarea.h
+
+FORMS += \
+        mainwindow.ui
+
+RESOURCES += \
+    icon.qrc

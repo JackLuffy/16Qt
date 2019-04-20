@@ -1,74 +1,88 @@
 #include "mainwindow.h"
-#include <QToolBar>
+#include "ui_mainwindow.h"
+#include <QPainter>
+#include <QPen>
+#include <QBrush>
+#include <QColor>
 #include <QColorDialog>
+#include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
-    drawWidget =new DrawWidget;   	//新建一个DrawWidget对象
-    setCentralWidget(drawWidget);	//新建的DrawWidget对象作为主窗口的中央窗体
+    ui->setupUi(this);
 
-    createToolBar();                //实现一个工具栏
+    // 初始化基本元素
+    lineStyleLabel = new QLabel("线条风格: ", this);
 
-    setMinimumSize(600,400);       	//设置主窗口的最小尺寸
+    lineStyleComboBox = new QComboBox(this);
+    lineStyleComboBox->addItem("实线", static_cast<int>(Qt::SolidLine));
+    lineStyleComboBox->addItem("虚线", static_cast<int>(Qt::DashLine));
+    lineStyleComboBox->addItem("点线", static_cast<int>(Qt::DotLine));
+    lineStyleComboBox->addItem("点虚线", static_cast<int>(Qt::DashDotLine));
+    lineStyleComboBox->addItem("点点虚线", static_cast<int>(Qt::DashDotDotLine));
 
-    ShowStyle();                    //初始化线型，设置控件中的当前值作为初始值
-    drawWidget->setWidth(widthSpinBox->value()); 	//初始化线宽
-    drawWidget->setColor(Qt::black);             	//初始化颜色
+    lineWidthLabel = new QLabel("线宽: ", this);
+    lineWidthSpinBox = new QSpinBox(this);
+    lineWidthSpinBox->setRange(1, 10);
+    lineWidthSpinBox->setValue(2);
+
+    paletteToolBtn = new QToolButton(this);
+    paletteToolBtn->setIcon(QIcon(":/palette.png"));
+
+    clearToolBtn = new QToolButton(this);
+    clearToolBtn->setIcon(QIcon(":/clear.png"));
+
+    // 将基本元素添加到默认工具栏
+    ui->mainToolBar->addWidget(lineStyleLabel);
+    ui->mainToolBar->addWidget(lineStyleComboBox);
+
+    ui->mainToolBar->addSeparator();
+    ui->mainToolBar->addWidget(lineWidthLabel);
+    ui->mainToolBar->addWidget(lineWidthSpinBox);
+
+    ui->mainToolBar->addSeparator();
+    ui->mainToolBar->addWidget(paletteToolBtn);
+    ui->mainToolBar->addWidget(clearToolBtn);
+
+    // 固定工具栏
+    ui->mainToolBar->setMovable(false);
+
+    // 设置中央编辑区
+    dArea = new drawArea;
+    dArea->setAutoFillBackground(true);
+    QPalette p;
+    p.setColor(QPalette::Background, Qt::white);
+    dArea->setPalette(p);
+    this->setCentralWidget(dArea);
+
+    // 关联工具栏的信号与编辑区的槽函数
+    connect(this->lineStyleComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(choseStyle(int)));
+    connect(this->lineWidthSpinBox, SIGNAL(valueChanged(int)),
+            dArea, SLOT(setPenWidth(int)));
+    connect(this->paletteToolBtn, SIGNAL(clicked(bool)),
+            this, SLOT(choseColor()));
+    connect(this->clearToolBtn, SIGNAL(clicked(bool)),
+            dArea, SLOT(clear()));
 }
 
 MainWindow::~MainWindow()
 {
-
+    delete ui;
 }
 
-void MainWindow::createToolBar()
+void MainWindow::choseStyle(int index)
 {
-    QToolBar *toolBar = addToolBar("Tool");   	//为主窗口新建一个工具栏对象
-
-    styleLabel =new QLabel(tr("线型风格："));   	//创建线型选择控件
-    styleComboBox =new QComboBox;
-    styleComboBox->addItem(tr("SolidLine"),static_cast<int>(Qt::SolidLine));
-    styleComboBox->addItem(tr("DashLine"),static_cast<int>(Qt::DashLine));
-    styleComboBox->addItem(tr("DotLine"),static_cast<int>(Qt::DotLine));
-    styleComboBox->addItem(tr("DashDotLine"),static_cast<int>(Qt::DashDotLine));
-    styleComboBox->addItem(tr("DashDotDotLine"),static_cast<int>(Qt::DashDotDotLine));
-    connect(styleComboBox,SIGNAL(activated(int)),this,SLOT(ShowStyle())); //关联相应的槽函数
-
-    widthLabel =new QLabel(tr("线宽："));    		//创建线宽选择控件
-    widthSpinBox =new QSpinBox;
-    connect(widthSpinBox,SIGNAL(valueChanged(int)),drawWidget,SLOT(setWidth(int)));
-    colorBtn =new QToolButton;                  //创建颜色选择控件
-    QPixmap pixmap(20,20);
-    pixmap.fill(Qt::black);
-    colorBtn->setIcon(QIcon(pixmap));
-    connect(colorBtn,SIGNAL(clicked()),this,SLOT(ShowColor()));
-
-    clearBtn =new QToolButton();               	//创建清除按钮
-    clearBtn->setText(tr("清除"));
-    connect(clearBtn,SIGNAL(clicked()),drawWidget,SLOT(clear()));
-
-    toolBar->addWidget(styleLabel);
-    toolBar->addWidget(styleComboBox);
-    toolBar->addWidget(widthLabel);
-    toolBar->addWidget(widthSpinBox);
-    toolBar->addWidget(colorBtn);
-    toolBar->addWidget(clearBtn);
+    dArea->setPenStyle(lineStyleComboBox->itemData(index).toInt());
 }
 
-void MainWindow::ShowStyle()
+void MainWindow::choseColor()
 {
-    drawWidget->setStyle(styleComboBox->itemData(
-        styleComboBox->currentIndex(),Qt::UserRole).toInt());
-}
-void MainWindow::ShowColor()
-{
-    QColor color = QColorDialog::getColor(static_cast<int>(Qt::black),this);	//使用标准颜色对话框QColorDialog获得一个颜色值
-    if(color.isValid())
-    {
-        drawWidget->setColor(color);
-        QPixmap p(20,20);
-        p.fill(color);
-        colorBtn->setIcon(QIcon(p));
-    }
+    QColor c = QColorDialog::getColor();
+    if(!c.isValid())
+        return;
+
+    dArea->setPenColor(c);
 }
