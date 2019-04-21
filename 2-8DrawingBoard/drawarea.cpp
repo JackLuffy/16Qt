@@ -18,7 +18,6 @@ drawArea::drawArea(QWidget *parent) : QWidget(parent)
 void drawArea::paintEvent(QPaintEvent *e)
 {
     QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing); // 抗锯齿
     p.drawPixmap(QPoint(0,0), *pix);
 }
 
@@ -38,12 +37,30 @@ void drawArea::mouseMoveEvent(QMouseEvent *e)
     pen.setStyle(Qt::PenStyle(style));
 
     p->begin(pix);
+    p->setRenderHint(QPainter::Antialiasing); // 抗锯齿
     p->setPen(pen);
     p->drawLine(beginPoint, e->pos());
     p->end();
     beginPoint = e->pos();
 
     update();
+}
+
+void drawArea::resizeEvent(QResizeEvent *e)
+{
+    if(this->height() <= pix->height() && this->QWidget::width() <= pix->width())
+        return;
+
+    QPixmap *newPix = new QPixmap(this->size());
+    newPix->fill(Qt::white);
+
+    QPainter p;
+    p.begin(newPix);
+    p.drawPixmap(QPoint(0,0), *pix);
+    p.end();
+
+    delete pix;
+    pix = newPix;
 }
 
 void drawArea::setPenStyle(int s)

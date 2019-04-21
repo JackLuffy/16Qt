@@ -3,8 +3,9 @@
 
 #include <QWidget>
 #include <QPaintEvent>
-#include <QPainter>
 #include <QMouseEvent>
+#include <QResizeEvent>
+#include <QPainter>
 #include <QPoint>
 #include <QPixmap>
 #include <QColor>
@@ -19,6 +20,7 @@ public:
     void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
 signals:
 

@@ -6,6 +6,8 @@
 #include <QColor>
 #include <QColorDialog>
 #include <QDebug>
+#include <QApplication>
+#include <QDesktopWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -49,13 +51,13 @@ MainWindow::MainWindow(QWidget *parent) :
     // 固定工具栏
     ui->mainToolBar->setMovable(false);
 
-    // 设置中央编辑区
+    // 构建中央编辑区，并调整其位置到中心
     dArea = new drawArea;
-    dArea->setAutoFillBackground(true);
-    QPalette p;
-    p.setColor(QPalette::Background, Qt::white);
-    dArea->setPalette(p);
     this->setCentralWidget(dArea);
+    QDesktopWidget *desktop = QApplication::desktop();
+    int x = ( desktop->width() - this->width() ) / 2;
+    int y = ( desktop->height()- this->height()) / 2;
+    this->move(x, y-100);
 
     // 关联工具栏的信号与编辑区的槽函数
     connect(this->lineStyleComboBox, SIGNAL(currentIndexChanged(int)),
