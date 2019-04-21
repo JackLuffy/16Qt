@@ -1,0 +1,5 @@
+﻿自动步枪, 赫克勒-科赫HK 416, 德国,   gun1.png
+自动步枪, M4卡宾枪,          美国,   gun2.png
+冲锋枪,   SAG,               智利,   gun3.png
+狙击枪,   沙科TRG,           芬兰,   gun4.png
+狙击枪,   杰帕德M2/M2A1,     匈牙利, gun5.png
