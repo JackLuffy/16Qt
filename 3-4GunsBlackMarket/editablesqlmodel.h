@@ -17,8 +17,11 @@ public:
     QVariant data(const QModelIndex &item, int role) const;
 
 private:
-    bool modify_type(int id, QString newType);
-    bool modify_name(int id, QString newName);
+    bool modify_type (int id, QString newT);
+    bool modify_name (int id, QString newN);
+    bool modify_price(int id, float   newP);
+    bool modify_note (int id, QString newNote);
+
     void refetchDB();
 };
 

@@ -31,6 +31,7 @@ private:
 
 private slots:
     void updatePanel(QString s);
+    void updateAll();
 };
 
 #endif // WIDGET_H

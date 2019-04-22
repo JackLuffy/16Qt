@@ -35,12 +35,10 @@ bool EditableSqlModel::setData(const QModelIndex &index, const QVariant &value, 
     bool ok;
     switch(index.column())
     {
-    case 1: ok = modify_type(id, value.toString());
-            qDebug() << __LINE__;
-            break;
-    case 2: ok = modify_name(id, value.toString());
-            qDebug() << __LINE__;
-            break;
+    case 1: ok = modify_type (id, value.toString()); break;
+    case 2: ok = modify_name (id, value.toString()); break;
+    case 3: ok = modify_price(id, value.toFloat ()); break;
+    case 5: ok = modify_note (id, value.toString()); break;
     }
 
     // 重新将数据库模的数据加载到型中
@@ -75,7 +73,6 @@ QVariant EditableSqlModel::data(const QModelIndex &item, int role) const
 void EditableSqlModel::refetchDB()
 {
     setQuery("SELECT * FROM guns");
-
     setHeaderData(0, Qt::Horizontal, "序号");
     setHeaderData(1, Qt::Horizontal, "类别");
     setHeaderData(2, Qt::Horizontal, "型号");
@@ -87,7 +84,6 @@ void EditableSqlModel::refetchDB()
 
 bool EditableSqlModel::modify_type(int id, QString newType)
 {
-    qDebug() << __LINE__;
     QSqlQuery query;
 
     bool ok;
@@ -111,6 +107,39 @@ bool EditableSqlModel::modify_name(int id, QString newName)
     bool ok;
     query.prepare("UPDATE guns SET name = ? WHERE id = ?");
     query.addBindValue(newName);
+    query.addBindValue(id);
+
+    ok = query.exec();
+    if(!ok)
+        qDebug() << query.lastError().databaseText();
+
+    return ok;
+}
+
+bool EditableSqlModel::modify_price(int id, float newP)
+{
+    QSqlQuery query;
+
+    bool ok;
+    query.prepare("UPDATE guns SET price = ? WHERE id = ?");
+    query.addBindValue(newP);
+    query.addBindValue(id);
+
+    ok = query.exec();
+    if(!ok)
+        qDebug() << query.lastError().databaseText();
+
+    return ok;
+
+}
+
+bool EditableSqlModel::modify_note(int id, QString newNote)
+{
+    QSqlQuery query;
+
+    bool ok;
+    query.prepare("UPDATE guns SET note = ? WHERE id = ?");
+    query.addBindValue(newNote);
     query.addBindValue(id);
 
     ok = query.exec();

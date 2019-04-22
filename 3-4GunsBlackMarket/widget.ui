@@ -57,7 +57,7 @@
       </widget>
      </item>
      <item row="1" column="6">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButtonCommit">
        <property name="text">
         <string>提交订单</string>
        </property>
@@ -181,7 +181,7 @@
       </spacer>
      </item>
      <item row="1" column="7">
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="pushButtonEnter">
        <property name="text">
         <string>确定</string>
        </property>

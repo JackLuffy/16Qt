@@ -37,7 +37,7 @@ public:
     QLineEdit *lineEditPriceTotal;
     QLabel *label_13;
     QLabel *labelRemain;
-    QPushButton *pushButton_2;
+    QPushButton *pushButtonCommit;
     QSpinBox *spinBoxBuyAmount;
     QSpacerItem *horizontalSpacer_2;
     QLabel *label_11;
@@ -58,7 +58,7 @@ public:
     QLabel *label_22;
     QLineEdit *lineEditAmountIncome;
     QSpacerItem *horizontalSpacer_4;
-    QPushButton *pushButton_4;
+    QPushButton *pushButtonEnter;
     QTableView *tableView;
 
     void setupUi(QWidget *Widget)
@@ -97,10 +97,10 @@ public:
 
         gridLayout_2->addWidget(labelRemain, 1, 5, 1, 1);
 
-        pushButton_2 = new QPushButton(tab1_2);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButtonCommit = new QPushButton(tab1_2);
+        pushButtonCommit->setObjectName(QStringLiteral("pushButtonCommit"));
 
-        gridLayout_2->addWidget(pushButton_2, 1, 6, 1, 1);
+        gridLayout_2->addWidget(pushButtonCommit, 1, 6, 1, 1);
 
         spinBoxBuyAmount = new QSpinBox(tab1_2);
         spinBoxBuyAmount->setObjectName(QStringLiteral("spinBoxBuyAmount"));
@@ -197,10 +197,10 @@ public:
 
         gridLayout_4->addItem(horizontalSpacer_4, 1, 0, 1, 7);
 
-        pushButton_4 = new QPushButton(tab2_2);
-        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButtonEnter = new QPushButton(tab2_2);
+        pushButtonEnter->setObjectName(QStringLiteral("pushButtonEnter"));
 
-        gridLayout_4->addWidget(pushButton_4, 1, 7, 1, 1);
+        gridLayout_4->addWidget(pushButtonEnter, 1, 7, 1, 1);
 
         tabWidget->addTab(tab2_2, QString());
         tableView = new QTableView(Widget);
@@ -220,7 +220,7 @@ public:
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", Q_NULLPTR));
         label_13->setText(QApplication::translate("Widget", "\345\272\223\345\255\230", Q_NULLPTR));
         labelRemain->setText(QApplication::translate("Widget", "0", Q_NULLPTR));
-        pushButton_2->setText(QApplication::translate("Widget", "\346\217\220\344\272\244\350\256\242\345\215\225", Q_NULLPTR));
+        pushButtonCommit->setText(QApplication::translate("Widget", "\346\217\220\344\272\244\350\256\242\345\215\225", Q_NULLPTR));
         label_11->setText(QApplication::translate("Widget", "\345\215\225\344\273\267", Q_NULLPTR));
         label_12->setText(QApplication::translate("Widget", "\346\200\273\344\273\267", Q_NULLPTR));
         label_9->setText(QApplication::translate("Widget", "\345\220\215\347\247\260", Q_NULLPTR));
@@ -231,7 +231,7 @@ public:
         label_20->setText(QApplication::translate("Widget", "\345\236\213\345\217\267", Q_NULLPTR));
         label_21->setText(QApplication::translate("Widget", "\344\273\267\346\240\274", Q_NULLPTR));
         label_22->setText(QApplication::translate("Widget", "\346\225\260\351\207\217", Q_NULLPTR));
-        pushButton_4->setText(QApplication::translate("Widget", "\347\241\256\345\256\232", Q_NULLPTR));
+        pushButtonEnter->setText(QApplication::translate("Widget", "\347\241\256\345\256\232", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab2_2), QApplication::translate("Widget", "\346\226\260\350\264\247\345\205\245\345\272\223", Q_NULLPTR));
     } // retranslateUi
 
