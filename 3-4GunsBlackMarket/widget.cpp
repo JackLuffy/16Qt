@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 #include <QString>
 #include <QDebug>
 #include <QMessageBox>
@@ -58,6 +60,7 @@ Widget::~Widget()
 
 void Widget::updatePanel(QString s)
 {
+    qDebug() << QString("%1: %2").arg(__LINE__).arg(s);
     // 类别改变 --> 型号跟着变
     if(sender()->objectName() == ui->comboBox_typeSale->objectName())
     {
@@ -106,8 +109,8 @@ void Widget::updateAll()
         return;
 
     // 获取当前型号的单价，并计算总价
-    QString type  = ui->comboBox_name->currentText();
-    prices->setQuery(QString("SELECT price FROM guns WHERE name = '%1'").arg(type));
+    QString name  = ui->comboBox_name->currentText();
+    prices->setQuery(QString("SELECT price FROM guns WHERE name = '%1'").arg(name));
     float totalAmount = prices->data(remains->index(0,0)).toInt() * amount;
 
     // 弹窗提示
@@ -116,4 +119,39 @@ void Widget::updateAll()
                                   QMessageBox::Yes, QMessageBox::No);
     if(a == QMessageBox::No)
         return;
+
+    // 更新数据库
+    // 获取当前型号的库存
+    remains->setQuery(QString("SELECT remain FROM guns WHERE name = '%1'").arg(name));
+    int remain = remains->data(remains->index(0,0)).toInt();
+
+    QString SQL;
+    QSqlQuery query;
+
+    if(amount > remain)
+    {
+        QMessageBox::information(this, "错误", "库存不足！", QMessageBox::Ok);
+        return;
+    }
+    else if(amount == remain)
+    {
+        qDebug() << "清仓";
+        SQL = QString("DELETE FROM guns WHERE name='%1'").arg(name);
+    }
+    else
+    {
+        qDebug() << "减仓";
+        SQL = QString("UPDATE guns SET remain=%1 WHERE name='%2'").arg(remain-amount).arg(name);
+    }
+
+    if(!query.exec(SQL))
+    {
+        qDebug() << query.lastError().databaseText();
+    }
+    model->refetchDB();
+
+    // 获取当前的类别，并更新面板数据（待续）
+    QString type = ui->comboBox_typeSale->currentText();
+    emit ui->comboBox_typeSale->currentTextChanged(type);
+    this->updatePanel(type);
 }

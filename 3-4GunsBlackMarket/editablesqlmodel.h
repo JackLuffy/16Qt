@@ -22,6 +22,7 @@ private:
     bool modify_price(int id, float   newP);
     bool modify_note (int id, QString newNote);
 
+public slots:
     void refetchDB();
 };
 
